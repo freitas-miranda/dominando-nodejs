@@ -10,7 +10,7 @@ server.get("/hello", (req, res) => {
   return res.json({
     title: "Hello World",
     message: `Olá ${nome} tudo bem!?`,
-    idade: idade
+    idade: idade,
   });
 });
 
@@ -22,11 +22,10 @@ server.get("/hello/:nome", (req, res) => {
 
   return res.json({
     title: "Hello World",
-    message: `Olá ${nome} tudo bem!?`
+    message: `Olá ${nome} tudo bem!?`,
   });
 });
 
 server.listen(3000);
 
 console.log("Servidor escutando na porta 3000");
-
