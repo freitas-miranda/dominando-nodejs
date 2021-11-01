@@ -7,7 +7,6 @@ yarn add sucrase -D
 
 # Auxiliar na sintaxe
 yarn add eslint -D
-
 yarn eslint --init
 # Escolhas:
   # > To check syntax, find problems, and enforce code style
@@ -21,13 +20,3 @@ yarn eslint --init
   # ? Would you like to install them now with npm? » No / Yes  = Yes
 
 ```
-
-
-
-# Acesso ao curso
-freitas.miranda@gmail.com
-pinB@X9j
-
-
-# Parei aqui
-https://class.devsamurai.com.br/lectures/374
