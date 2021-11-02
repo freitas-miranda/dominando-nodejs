@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "scripts": {
-    "dev": "nodemon ./src/server.js",
-    "l": "npx eslint ."
-  },
   "dependencies": {
     "express": "^4.17.1",
     "mariadb": "^2.5.5",
@@ -20,5 +16,10 @@
     "prettier": "^2.4.1",
     "sequelize-cli": "^6.2.0",
     "sucrase": "^3.20.3"
+  },
+  "scripts": {
+    "dev": "nodemon ./src/server.js",
+    "l": "npx eslint .",
+    "playground": "nodemon ./src/playground.js"
   }
 }
