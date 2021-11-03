@@ -160,6 +160,50 @@ class Playground {
     });
     console.log(JSON.stringify(customers, null, 2));
   }
+
+  static async count() {
+    const customers = await Customer.count({
+      where: {
+        status: {
+          [Op.in]: ["ACTIVE", "ARCHIVED"],
+        },
+      },
+    });
+    console.log(JSON.stringify(customers, null, 2));
+  }
+
+  static async max() {
+    const customers = await Customer.max("createdAt", {
+      where: {
+        status: {
+          [Op.in]: ["ACTIVE", "ARCHIVED"],
+        },
+      },
+    });
+    console.log(JSON.stringify(customers, null, 2));
+  }
+
+  static async min() {
+    const customers = await Customer.min("createdAt", {
+      where: {
+        status: {
+          [Op.in]: ["ACTIVE", "ARCHIVED"],
+        },
+      },
+    });
+    console.log(JSON.stringify(customers, null, 2));
+  }
+
+  static async sum() {
+    const customers = await Customer.sum("id", {
+      where: {
+        status: {
+          [Op.in]: ["ACTIVE", "ARCHIVED"],
+        },
+      },
+    });
+    console.log(JSON.stringify(customers, null, 2));
+  }
 }
 
-Playground.limit();
+Playground.sum();
