@@ -2,6 +2,7 @@ import { Op } from "sequelize";
 import "./database";
 
 import Customer from "./app/models/Customer";
+import Contact from "./app/models/Contact";
 
 class Playground {
   static async play() {
@@ -108,16 +109,31 @@ class Playground {
     });
     console.log(JSON.stringify(customers, null, 2));
   }
+
+  static async join() {
+    const customers = await Customer.findAll({
+      include: [
+        {
+          model: Contact,
+          where: {
+            status: "ACTIVE",
+          },
+          required: false, // left join
+        },
+      ],
+      where: {
+        [Op.or]: {
+          status: {
+            [Op.in]: ["ARCHIVED"],
+          },
+          name: {
+            [Op.like]: "%MIRANDAS%",
+          },
+        },
+      },
+    });
+    console.log(JSON.stringify(customers, null, 2));
+  }
 }
 
-// Playground.play();
-// Playground.findId();
-// Playground.naoMostrarCampos();
-// Playground.findByPk();
-// Playground.findOne();
-// Playground.where();
-// Playground.whereIgual();
-// Playground.whereDiferente();
-// Playground.whereIn();
-// Playground.whereBetween();
-Playground.whereOr();
+Playground.join();
