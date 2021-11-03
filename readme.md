@@ -19,4 +19,5 @@ yarn eslint --init
   # > JavaScript
   # ? Would you like to install them now with npm? » No / Yes  = Yes
 
+# Instalar o Prettier
 ```
