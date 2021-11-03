@@ -134,6 +134,32 @@ class Playground {
     });
     console.log(JSON.stringify(customers, null, 2));
   }
+
+  static async order() {
+    const customers = await Customer.findAll({
+      where: {
+        status: {
+          [Op.in]: ["ACTIVE", "ARCHIVED"],
+        },
+      },
+      order: [["name", "DESC"], ["createdAt"]],
+    });
+    console.log(JSON.stringify(customers, null, 2));
+  }
+
+  static async limit() {
+    const customers = await Customer.findAll({
+      where: {
+        status: {
+          [Op.in]: ["ACTIVE", "ARCHIVED"],
+        },
+      },
+      order: [["name", "DESC"], ["createdAt"]],
+      limit: 2,
+      offset: 2 * 1 - 2, // limit * page - limit
+    });
+    console.log(JSON.stringify(customers, null, 2));
+  }
 }
 
-Playground.join();
+Playground.limit();
