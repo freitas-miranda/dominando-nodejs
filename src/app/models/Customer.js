@@ -32,6 +32,10 @@ class Customer extends Model {
           },
         },
         sequelize,
+        name: {
+          singular: "customer",
+          plural: "customers",
+        },
       }
     );
   }
