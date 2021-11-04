@@ -204,6 +204,45 @@ class Playground {
     });
     console.log(JSON.stringify(customers, null, 2));
   }
+
+  static async whereScope() {
+    const customers = await Customer.scope("active").findAll();
+    console.log(JSON.stringify(customers, null, 2));
+  }
+
+  static async whereScopeFunction() {
+    const customers = await Customer.scope([
+      { method: ["created", "2021-11-01", "2021-11-04"] },
+      "active",
+    ]).findAll();
+    console.log(JSON.stringify(customers, null, 2));
+  }
+
+  static async create() {
+    const customer = await Customer.create({
+      name: "IG6",
+      email: "ig6@gmail.com",
+    });
+    console.log(JSON.stringify(customer, null, 2));
+  }
+
+  static async update() {
+    const customer = await Customer.findByPk(10);
+    console.log("Antes: ", JSON.stringify(customer, null, 2));
+
+    const newCustomer = await customer.update({
+      status: "ACTIVE",
+    });
+    console.log("Depois: ", JSON.stringify(newCustomer, null, 2));
+  }
+
+  static async delete() {
+    const customer = await Customer.findByPk(5);
+    await customer.destroy();
+    console.log("Deletado!");
+  }
 }
 
-Playground.sum();
+// Playground.create();
+// Playground.delete();
+Playground.whereScopeFunction();

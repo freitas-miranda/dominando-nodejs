@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import Sequelize, { Model } from "sequelize";
 
 class Customer extends Model {
@@ -9,6 +10,27 @@ class Customer extends Model {
         status: Sequelize.ENUM("ACTIVE", "ARCHIVED"),
       },
       {
+        scopes: {
+          active: {
+            where: {
+              status: "ACTIVE",
+            },
+          },
+          created(inicio, fim) {
+            return {
+              where: {
+                createdAt: {
+                  [Op.between]: [inicio, fim],
+                },
+              },
+            };
+          },
+        },
+        hooks: {
+          beforeValidate: (customer) => {
+            customer.status = "ARCHIVED";
+          },
+        },
         sequelize,
       }
     );
