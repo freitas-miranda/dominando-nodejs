@@ -28,7 +28,7 @@ class Customer extends Model {
         },
         hooks: {
           beforeValidate: (customer) => {
-            customer.status = "ARCHIVED";
+            customer.status = "ACTIVE";
           },
         },
         sequelize,

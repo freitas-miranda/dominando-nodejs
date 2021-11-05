@@ -1,14 +1,9 @@
+import * as Yup from "yup";
 import { Op } from "sequelize";
 import { parseISO } from "date-fns";
 
 import Customer from "../models/Customer";
 import Contact from "../models/Contact";
-
-const customers = [
-  { id: 1, name: "Dev Samurai", site: "http://devsamurai.com.br" },
-  { id: 2, name: "Google", site: "http://google.com" },
-  { id: 3, name: "UOL", site: "http://uol.com.br" },
-];
 
 class CustomersController {
   // Listagem dos Customers
@@ -115,53 +110,67 @@ class CustomersController {
   }
 
   // Recupera um Customer
-  show(req, res) {
-    const id = parseInt(req.params.id, 10);
-    const customer = customers.find((item) => item.id === id);
-    const status = customer ? 200 : 404;
+  async show(req, res) {
+    const customer = await Customer.findByPk(req.params.id);
 
-    console.log("GET :: /customers/:id ", customer);
+    if (!customer) {
+      return res.status(404).json();
+    }
 
-    return res.status(status).json(customer);
+    return res.json(customer);
   }
 
   // Cria um novo Customer
-  create(req, res) {
-    const { name, site } = req.body;
-    const id = customers[customers.length - 1].id + 1;
+  async create(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      email: Yup.string().email().required(),
+      status: Yup.string().uppercase(),
+    });
 
-    const newCustomer = { id, name, site };
-    customers.push(newCustomer);
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: "Error on validate schema." });
+    }
 
-    return res.status(201).json(newCustomer);
+    const customer = await Customer.create(req.body);
+
+    return res.status(201).json(customer);
   }
 
   // Atualiza um Customer
-  update(req, res) {
-    const id = parseInt(req.params.id, 10);
-    const { name, site } = req.body;
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string(),
+      email: Yup.string().email(),
+      status: Yup.string().uppercase(),
+    });
 
-    const index = customers.findIndex((item) => item.id === id);
-    const status = index >= 0 ? 200 : 404;
-
-    if (index >= 0) {
-      customers[index] = { id: parseInt(id, 10), name, site };
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: "Error on validate schema." });
     }
 
-    return res.status(status).json(customers[index]);
+    const customer = await Customer.findByPk(req.params.id);
+
+    if (!customer) {
+      return res.status(404).json();
+    }
+
+    await customer.update(req.body);
+
+    return res.json(customer);
   }
 
   // Exclui um Customer
-  destroy(req, res) {
-    const id = parseInt(req.params.id, 10);
-    const index = customers.findIndex((item) => item.id === id);
-    const status = index >= 0 ? 200 : 404;
+  async destroy(req, res) {
+    const customer = await Customer.findByPk(req.params.id);
 
-    if (index >= 0) {
-      customers.splice(index, 1);
+    if (!customer) {
+      return res.status(404).json();
     }
 
-    return res.status(status).json();
+    await customer.destroy();
+
+    return res.json();
   }
 }
 
