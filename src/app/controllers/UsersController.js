@@ -81,7 +81,7 @@ class UsersController {
     }
 
     const data = await User.findAll({
-      attributes: { exclude: ["password", "password_hash"] },
+      attributes: { exclude: ["password", "password_hash", "file_id"] },
       where,
       order,
       limit,
@@ -98,9 +98,9 @@ class UsersController {
       return res.status(404).json();
     }
 
-    const { id, name, email, createdAt, updatedAt } = user;
+    const { id, name, email, fileId, createdAt, updatedAt } = user;
 
-    return res.json({ id, name, email, createdAt, updatedAt });
+    return res.json({ id, name, email, fileId, createdAt, updatedAt });
   }
 
   async create(req, res) {
@@ -117,11 +117,13 @@ class UsersController {
       return res.status(400).json({ error: "Error on validate schema." });
     }
 
-    const { id, name, email, createdAt, updatedAt } = await User.create(
+    const { id, name, email, fileId, createdAt, updatedAt } = await User.create(
       req.body
     );
 
-    return res.status(201).json({ id, name, email, createdAt, updatedAt });
+    return res
+      .status(201)
+      .json({ id, name, email, fileId, createdAt, updatedAt });
   }
 
   async update(req, res) {
@@ -155,11 +157,13 @@ class UsersController {
       return res.status(401).json({ error: "User password not match." });
     }
 
-    const { id, name, email, createdAt, updatedAt } = await user.update(
+    const { id, name, email, fileId, createdAt, updatedAt } = await user.update(
       req.body
     );
 
-    return res.status(201).json({ id, name, email, createdAt, updatedAt });
+    return res
+      .status(201)
+      .json({ id, name, email, fileId, createdAt, updatedAt });
   }
 
   async destroy(req, res) {
