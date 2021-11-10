@@ -1,4 +1,6 @@
+import "dotenv/config";
+
 import app from "./app";
 
-app.listen(3000);
-console.log("Servidor ouvindo a porta 3000!");
+app.listen(process.env.PORT);
+console.log("Servidor ouvindo a porta ".concat(process.env.PORT));
