@@ -3,7 +3,10 @@ import { Op } from "sequelize";
 import { parseISO } from "date-fns";
 
 import User from "../models/User";
-import Mail from "../../lib/Mail";
+
+import Queue from "../../lib/Queue";
+import WelcomeEmailJob from "../jobs/WelcomeEmailJob";
+import DummyJob from "../jobs/DummyJob";
 
 class UsersController {
   async index(req, res) {
@@ -122,11 +125,8 @@ class UsersController {
       req.body
     );
 
-    Mail.send({
-      to: email,
-      subject: "Bem-vindo(a)",
-      text: `Olá ${name}, bem-vindoa(a) ao nosso sistema`,
-    });
+    await Queue.add(DummyJob.key, { message: "Executado pela fila!" });
+    await Queue.add(WelcomeEmailJob.key, { name, email });
 
     return res
       .status(201)
